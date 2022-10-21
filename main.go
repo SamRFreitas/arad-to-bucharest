@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"arad-to-bucharest/classes"
+)
 
 func main ()  {
-	fmt.Println("Chama");
+
+	v := classes.NewVertice("Ita", 100)
+
+	fmt.Println(v.Name)
+
+	a := classes.NewAdjacente(v, 100)
+
+	fmt.Println(a.Vertice)
 }
