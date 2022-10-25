@@ -154,8 +154,10 @@ func main() {
 
 	grafo := NewGrafo(*arad, *zerind, *oradea, *sibiu, *timisoara, *lugoj, *mehadia, *dobreta, *craiova, *rimnicu, *fagaras, *pitest, *bucharest, *giurgiu)
 
-	for _, e := range grafo.Sibiu.Adjacentes {
-		fmt.Println(e.Vertice.Rotulo)
-	}
+	fmt.Println(grafo.Arad.Rotulo)
 
+	
+	gulosa := classes.NewGulosa(bucharest)
+
+	fmt.Println(gulosa.Vertice.Rotulo)
 }
