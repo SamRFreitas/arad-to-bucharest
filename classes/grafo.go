@@ -1,5 +1,6 @@
 package classes
 
+// GRAFO VAI TER QUE SE TORNAR O MAIN
 
 // // Atributos são as cidades (vértices do grafo)
 // public Vertice arad, zerind, oradea, sibiu, timisoara, lugoj, mehadia,
