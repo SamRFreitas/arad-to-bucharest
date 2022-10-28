@@ -6,7 +6,7 @@ type VetorOrdenado struct {
 	Vertices []*Vertice
 }
 
-func NewVetorOrdenado(capacidade int) *VetorOrdenado {
-	return &VetorOrdenado{Capacidade: capacidade, UltimaPosicao: -1}
+func NewVetorOrdenado(capacidade int, ultimaPosicao int) *VetorOrdenado {
+	return &VetorOrdenado{Capacidade: capacidade, UltimaPosicao: ultimaPosicao}
 }
 

@@ -157,7 +157,41 @@ func main() {
 	fmt.Println(grafo.Arad.Rotulo)
 
 	
-	gulosa := classes.NewGulosa(bucharest)
+	// gulosa := classes.NewGulosa(&grafo.Arad, &grago.bucharest)
 
-	fmt.Println(gulosa.Vertice.Rotulo)
+
+	// fmt.Println(gulosa.Destino.Rotulo)
+
+	busca(&grafo.Arad, &grafo.Bucharest)
+}
+
+func busca(origem *classes.Vertice, destino *classes.Vertice) {
+
+	status := false
+
+
+	if (origem.Rotulo == destino.Rotulo) {
+		status = true
+	} else {
+		capacidade := len(origem.Adjacentes)
+		fmt.Println(capacidade)
+		ultimaPosicao := len(origem.Adjacentes) - 1
+		fmt.Println(ultimaPosicao)
+		vetorOrdenado := classes.NewVetorOrdenado(capacidade, ultimaPosicao)
+		fmt.Println(vetorOrdenado)
+	}
+	
+	fmt.Println(status)
+	
+}
+
+func percorrerVetor(listaAdjacentes []classes.Vertice) []classes.Vertice{
+	for _, adjacente := range listaAdjacentes {
+		if(!adjacente.Visitado) {
+			adjacente.Visitado = true
+			inserir()
+		}
+	}
+	
+	return listaAdjacentes
 }
