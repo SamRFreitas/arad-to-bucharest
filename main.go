@@ -136,6 +136,8 @@ func NewGrafo(
 	return grafo
 }
 
+var status2 bool
+
 func main() {
 	arad := classes.NewVertice("Arad", 366)
 	zerind := classes.NewVertice("Zerind", 374)
@@ -162,7 +164,7 @@ func main() {
 
 	// fmt.Println(gulosa.Destino.Rotulo)
 
-	// busca(&grafo.Arad, &grafo.Bucharest)
+	busca(&grafo.Arad, &grafo.Bucharest)
 
 	// adjacentes = append(adjacentes, *classes.NewAdjacente(&grafo.Zerind, 75))
 	// adjacentes = append(adjacentes, *classes.NewAdjacente(&grafo.Sibiu, 140))
@@ -171,38 +173,50 @@ func main() {
 	// a := buscaIndiceDeInsercao(grafo.Arad.Adjacentes, 2)
 
 	
-	var teste []classes.Adjacente
-	teste = append(teste, *classes.NewAdjacente(&grafo.Fagaras, 99))
-	teste = append(teste, *classes.NewAdjacente(&grafo.Rimnicu, 80))
-	teste = append(teste, *classes.NewAdjacente(&grafo.Arad, 140))
-	teste = append(teste, *classes.NewAdjacente(&grafo.Oradea, 151))
+	// var teste []classes.Adjacente
+	// teste = append(teste, *classes.NewAdjacente(&grafo.Fagaras, 99))
+	// teste = append(teste, *classes.NewAdjacente(&grafo.Rimnicu, 80))
+	// teste = append(teste, *classes.NewAdjacente(&grafo.Arad, 140))
+	// teste = append(teste, *classes.NewAdjacente(&grafo.Oradea, 151))
 
-	exibeVetor(teste)
+	// a := buscaIndiceDeInsercao(grafo.Arad.Adjacentes, grafo.Arad)
+	// b := grafo.Arad.Adjacentes[a]
+	// fmt.Println(b.Vertice.Rotulo)
+	// exibeVetor(teste)
 
-	fmt.Println("CHAMA")
+	fmt.Println("--------------------------------")
 	
-	a := inserir(teste, *mehadia)
+	// a := inserir(teste, *sibiu)
 
-	fmt.Println(a)
+	// fmt.Println(a)
 }
 
 func busca(origem *classes.Vertice, destino *classes.Vertice) {
 
 	status := false
-
+	capacidade := len(origem.Adjacentes)
+	ultimaPosicao := len(origem.Adjacentes) - 1
+	vetorOrdenado := classes.NewVetorOrdenado(capacidade, ultimaPosicao)
+	exibeVetorAdjacentes(origem.Adjacentes)
 
 	if (origem.Rotulo == destino.Rotulo) {
 		status = true
 	} else {
-		capacidade := len(origem.Adjacentes)
-		fmt.Println(capacidade)
-		ultimaPosicao := len(origem.Adjacentes) - 1
-		fmt.Println(ultimaPosicao)
-		vetorOrdenado := classes.NewVetorOrdenado(capacidade, ultimaPosicao)
-		fmt.Println(vetorOrdenado)
+		
+		// fmt.Println(capacidade)
+		
+		// fmt.Println(ultimaPosicao)
+		
+		// fmt.Println(vetorOrdenado)
+		fmt.Println("Passou pelo Else")
+		vetorOrdenado.Vertices = percorrerVetor(origem.Adjacentes, *destino)
 	}
+
+	exibeVetorVertices(vetorOrdenado.Vertices)
+	// busca(*vetorOrdenado.Vertices[0], *destino)
 	
 	fmt.Println(status)
+	// return vetorOrdenado
 	
 }
 // func iniciarVetor(vetor []int) []int{
@@ -213,55 +227,74 @@ func busca(origem *classes.Vertice, destino *classes.Vertice) {
 
 // }
 
-func percorrerVetor(listaAdjacentes []classes.Vertice) []classes.Vertice{
+func percorrerVetor(listaAdjacentes []classes.Adjacente, origem classes.Vertice) []classes.Vertice{
+	var vetor []classes.Vertice
+
 	for _, adjacente := range listaAdjacentes {
-		if(!adjacente.Visitado) {
-			adjacente.Visitado = true
-			// inserir()
+		if(!adjacente.Vertice.Visitado) {
+			adjacente.Vertice.Visitado = true
+			vetor = inserir(listaAdjacentes, origem)
 		}
 	}
 	
-	return listaAdjacentes
+	return vetor
 }
-func exibeVetor(vetorOrdenado []classes.Adjacente) {
+
+func exibeVetorVertices(vetorOrdenado []classes.Vertice) {
+	for _, vertice := range vetorOrdenado {
+		fmt.Println(vertice.Rotulo, vertice.Distancia )
+	}
+}
+
+func exibeVetorAdjacentes(vetorOrdenado []classes.Adjacente) {
 	for _, adjacente := range vetorOrdenado {
 		fmt.Println(adjacente.Vertice.Rotulo, adjacente.Vertice.Distancia )
 	}
 }
 
 
-func buscaIndiceDeInsercao(vetorOrdenado []classes.Adjacente, vertice classes.Vertice) int {
+func buscaIndiceDeInsercao(adjacentes []classes.Adjacente, verticeAtual classes.Vertice) int {
+	adjacenteComMenorDistancia := adjacentes[0]
+	i := -1
 
-	for index, elemento := range vetorOrdenado {
-		if vertice.Distancia < elemento.Vertice.Distancia || elemento.Custo == -1 {
-
-			return index
+	for index, adjacente := range adjacentes {
+		if adjacente.Vertice.Distancia < adjacenteComMenorDistancia.Vertice.Distancia {
+			adjacenteComMenorDistancia = adjacente
+			i = index
 		}
 	}
 
-	return -1
+	return i
 }
 
-func inserir(vetorOrdenado []classes.Adjacente, numero classes.Vertice) []classes.Adjacente {
+func inserir(adjacentes []classes.Adjacente, destino classes.Vertice) []classes.Vertice {
 
-	var indiceDeInsercao int = buscaIndiceDeInsercao(vetorOrdenado, numero)
+	var indiceDeInsercao int = buscaIndiceDeInsercao(adjacentes, destino)
 
-	var i int = len(vetorOrdenado) - 1
+	var i int = len(adjacentes) - 1
 
 	for i > 0 {
 
 		if i >= indiceDeInsercao {
-			// fmt.Println(vetorOrdenado[i])
-			vetorOrdenado[i] = vetorOrdenado[i-1]
+			// fmt.Println(adjacentes[i])
+			adjacentes[i] = adjacentes[i-1]
 		}
 
 		i--
 	}
 
-	vetorOrdenado[indiceDeInsercao].Vertice = &numero
+	adjacentes[indiceDeInsercao].Vertice = &destino
 
-	exibeVetor(vetorOrdenado)
+	var vetor []classes.Vertice
 
-	return vetorOrdenado
+
+	for _, elemento := range adjacentes {
+		vetor = append(vetor, *elemento.Vertice) 
+	}
+	
+
+	// exibeVetor(vetor)
+
+	return vetor
 }
 
